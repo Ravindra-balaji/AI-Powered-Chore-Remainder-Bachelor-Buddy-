@@ -1,0 +1,9 @@
+body { font-family: Arial, sans-serif; margin: 18px; background: #f4f6f8; color:#222; }
+header { margin-bottom: 14px; }
+h1 { color: #004aad; margin-bottom: 6px; }
+table { width:100%; border-collapse: collapse; margin-top: 12px; background: #fff; }
+th, td { padding: 8px 10px; border: 1px solid #e1e6ea; text-align:left; font-size: 14px; }
+button { background:#004aad; color:white; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; }
+button:hover { background:#003580; }
+section { margin-top: 12px; }
+#status { font-weight:600; margin-left:8px; }

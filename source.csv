@@ -1,0 +1,22 @@
+day,number,name,work
+Monday,9392715118,anand,Cooking
+Monday,6302383258,sohail,Cooking
+Monday ,7995238213,khasim,Cleaning
+Tuesday,9701105237,Shahid,Cooking
+Tuesday,8985455884,Hima,Cooking
+Tuesday,9515175300,Balaji,Cleaning
+Wednesday,9515175300,Balaji,Cooking
+Wednesday,7995238213,Khasim,Cooking
+Wednesday,9701105237,Shahid,Cleaning
+Thursday,9392715118,anand,Cooking
+Thursday,6302383258,sohail,Cooking
+Thursday,8985455884,hima,Cleaning
+Friday,9515175300,Balaji,Cooking
+Friday,7995238213,khasim,Cooking
+Friday,9392715118,anand,Cleaning
+Saturday,9515175300,Balaji,Cooking
+Saturday,7995238213,Khasim,Cooking
+Saturday,6302383258,sohail,Cleaning
+Sunday,9701105237,Shahid,Cooking
+Sunday,8985455884,Hima,Cooking
+Sunday,9515175300,balaji,Cleaning

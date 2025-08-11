@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Chore Reminder</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>🏠 Chore Reminder (Lunch / Dinner)</h1>
+    <p>Upload CSV (columns: day, shift [optional], name, number/phone, work)</p>
+  </header>
+
+  <section>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".csv" required>
+      <button type="submit">Upload & Preview</button>
+      <span id="status" style="margin-left:10px;"></span>
+    </form>
+  </section>
+
+  <section id="preview" style="display:none;">
+    <h2>📋 Today's Preview</h2>
+    <table id="previewTable">
+      <thead>
+        <tr><th>Day</th><th>Shift</th><th>Name</th><th>Phone</th><th>Work</th><th>Message</th><th>Status</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button id="sendBtn">🚀 Send Messages</button>
+  </section>
+
+  <section id="result" style="display:none;">
+    <h2>📜 Send Result</h2>
+    <table id="resultTable">
+      <thead>
+        <tr><th>Day</th><th>Shift</th><th>Name</th><th>Phone</th><th>Work</th><th>Message</th><th>Status</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+<script>
+const uploadForm = document.getElementById("uploadForm");
+const preview = document.getElementById("preview");
+const previewTable = document.querySelector("#previewTable tbody");
+const statusSpan = document.getElementById("status");
+const result = document.getElementById("result");
+const resultTable = document.querySelector("#resultTable tbody");
+const sendBtn = document.getElementById("sendBtn");
+
+uploadForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  statusSpan.textContent = "⏳ Uploading...";
+  preview.style.display = "none";
+  result.style.display = "none";
+  previewTable.innerHTML = "";
+
+  const fd = new FormData(uploadForm);
+  const res = await fetch("/upload", { method: "POST", body: fd });
+  const data = await res.json();
+  if (res.ok) {
+    statusSpan.textContent = "✅ Preview ready";
+    if (Array.isArray(data) && data.length) {
+      previewTable.innerHTML = "";
+      data.forEach(row => {
+        previewTable.innerHTML += `<tr>
+          <td>${row.Day || ""}</td>
+          <td>${row.Shift || ""}</td>
+          <td>${row.Name || ""}</td>
+          <td>${row.Phone || ""}</td>
+          <td>${row.Work || ""}</td>
+          <td>${row.Message || ""}</td>
+          <td>${row.Status || ""}</td>
+        </tr>`;
+      });
+      preview.style.display = "block";
+    } else {
+      statusSpan.textContent = "ℹ️ No chores for current day/shift";
+    }
+  } else {
+    statusSpan.textContent = "❌ Error";
+    alert(JSON.stringify(data));
+  }
+});
+
+sendBtn.addEventListener("click", async () => {
+  if (!confirm("Send WhatsApp messages now to today's shift?")) return;
+  sendBtn.disabled = true;
+  sendBtn.textContent = "Sending…";
+  const res = await fetch("/send", { method: "POST" });
+  const data = await res.json();
+  sendBtn.disabled = false;
+  sendBtn.textContent = "🚀 Send Messages";
+
+  if (res.ok) {
+    resultTable.innerHTML = "";
+    (data || []).forEach(row => {
+      resultTable.innerHTML += `<tr>
+        <td>${row.Day || ""}</td>
+        <td>${row.Shift || ""}</td>
+        <td>${row.Name || ""}</td>
+        <td>${row.Phone || ""}</td>
+        <td>${row.Work || ""}</td>
+        <td>${row.Message || ""}</td>
+        <td>${row.Status || ""}</td>
+      </tr>`;
+    });
+    result.style.display = "block";
+    window.scrollTo(0, document.body.scrollHeight);
+  } else {
+    alert(JSON.stringify(data));
+  }
+});
+</script>
+</body>
+</html>
